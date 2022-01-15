@@ -167,7 +167,7 @@ class QAStrategyCTABase():
                 self.on_dailyclose()
                 self.on_dailyopen()
                 if self.market_type == QA.MARKET_TYPE.STOCK_CN:
-                    print('backtest: Settle!')
+                    # print('backtest: Settle!')
                     self.acc.settle()
             self._on_1min_bar()
             self._market_data.append(item)

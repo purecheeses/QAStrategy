@@ -31,12 +31,12 @@ class QAStrategyStockBase(QAStrategyCTABase):
                  start='2019-01-01', end='2019-10-21', send_wx=False, market_type='stock_cn',
                  data_host=eventmq_ip, data_port=eventmq_port, data_user=eventmq_username, data_password=eventmq_password,
                  trade_host=eventmq_ip, trade_port=eventmq_port, trade_user=eventmq_username, trade_password=eventmq_password,
-                 taskid=None, mongo_ip=mongo_ip):
+                 taskid=None, mongo_ip=mongo_ip,init_cash=1000):
         super().__init__(code=code, frequence=frequence, strategy_id=strategy_id, risk_check_gap=risk_check_gap, portfolio=portfolio,
                          start=start, end=end, send_wx=send_wx,
                          data_host=eventmq_ip, data_port=eventmq_port, data_user=eventmq_username, data_password=eventmq_password,
                          trade_host=eventmq_ip, trade_port=eventmq_port, trade_user=eventmq_username, trade_password=eventmq_password,
-                         taskid=taskid, mongo_ip=mongo_ip)
+                         taskid=taskid, mongo_ip=mongo_ip,init_cash=init_cash)
 
         self.code = code
         self.send_wx = send_wx
@@ -154,10 +154,7 @@ class QAStrategyStockBase(QAStrategyCTABase):
         self.acc = port.new_accountpro(
             account_cookie=self.strategy_id, init_cash=self.init_cash, market_type=self.market_type, frequence= self.frequence)
         #self.positions = self.acc.get_position(self.code)
-
-        print(self.acc)
-
-        print(self.acc.market_type)
+        self.acc.reset_assets(init_cash=self.init_cash)
         data = QA.QA_quotation(self.code, self.start, self.end, source=QA.DATASOURCE.MONGO,
                                frequence=self.frequence, market=self.market_type, output=QA.OUTPUT_FORMAT.DATASTRUCT)
 
